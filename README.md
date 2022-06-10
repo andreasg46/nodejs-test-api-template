@@ -1,12 +1,12 @@
-npm init 
-npm install express --save 
-npm install sequelize --save 
+npm init                                    
+<br />npm install express --save
+<br />npm install sequelize --save 
 
-# One of the following:
-$ npm install --save pg pg-hstore # Postgres
-$ npm install --save mysql2
-$ npm install --save mariadb
-$ npm install --save sqlite3
-$ npm install --save tedious # Microsoft SQL Server
- 
-node .
+<br /># One of the following:
+<br />$ npm install --save pg pg-hstore # Postgres
+<br />$ npm install --save mysql2
+<br />$ npm install --save mariadb
+<br />$ npm install --save sqlite3
+<br />$ npm install --save tedious # Microsoft SQL Server
+
+<br />node .
