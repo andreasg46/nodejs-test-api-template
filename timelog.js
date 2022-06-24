@@ -1,5 +1,4 @@
 ﻿const debug = process.env.DEBUGLOGS || false;
-
 const timeLog = (message, type) => {
     if (type == null) {
         type = 'INFO';
@@ -20,7 +19,7 @@ const timeLog = (message, type) => {
     hours = hours.substring(hours.length - 2);
     minutes = minutes.substring(minutes.length - 2);
     seconds = seconds.substring(seconds.length - 2);
-    return console.log(`${day}/${month}/${year} - ${hours}:${minutes}:${seconds} : ${type} : ${message}`);
+    return console.log(`#############:  ${day}/${month}/${year} - ${hours}:${minutes}:${seconds} : ${type} : ${message}`);
 };
 
 module.exports = timeLog;
