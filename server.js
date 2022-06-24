@@ -1,8 +1,11 @@
-const PORT = process.env.PORT || 7000;
+require('dotenv').config();
 
-const cors = require('cors');
+const PORT = process.env.PORT;
+
 const express = require('express');
 const app = express();
+const cors = require('cors');
+const timeLog = require('./timelog.js');
 
 // Swagger UI
 const swaggerUI = require("swagger-ui-express")
@@ -11,13 +14,17 @@ const specs = require("./swagger_ui_config");
 const user_api = require('./api/user_api');
 
 // Connect DB
-const db = require('./db/config_db');
+const db = require('./configs/db_config');
 db.authenticate()
-    .then(() => console.log('Database connected...'))
+    .then(() =>
+    {
+        // console.log('Database connected...');
+        timeLog(`/ : Success : Database Connected`);
+    })
     .catch(err => console.log('Error: ' + err))
 
 // Landing Message
-app.get("/", (req, res) => { res.send('VR Architectural Models API: ' + new Date())})
+app.get("/", (req, res) => { res.send('Visit => /api-docs | NodeJS REST API template running: ' + new Date())})
 
 // Use External Libraries
 app.use(cors())

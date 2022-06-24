@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
-const db = require('../db/config_db');
+const db = require('../configs/db_config');
 
 const User = require('../models/user');
 
@@ -98,7 +97,6 @@ router.put('/user/update/:id', (req, res) => {
 });
 
 router.delete('/users/delete-all', (req, res) => {
-
     return User.destroy({
         where: {},
         truncate: true
