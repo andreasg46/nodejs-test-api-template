@@ -115,26 +115,23 @@ paths:
                 $ref: '#/components/schemas/User'
         404:
           description: The user was not found
-  /user/delete/{id}:
+      security:
+        - bearerAuth: [ ]
+  /users/delete-all:
     delete:
-      summary: Deletes a user by id
+      summary: Delete all users
       tags: [ Users ]
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: string
-          required: true
-          description: The user id
       responses:
         200:
-          description: The user was deleted
+          description: The users were deleted
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
         404:
-          description: The user was not found
+          description: No users found
+      security:
+        - bearerAuth: [ ]
 components:
   schemas:
     Account:

@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
         if (account.role_id !== 2) {
             return bad(res, 401, 'Unauthorized');
         }
-        console.log(account.Hash.dataValues);
+
         const {id, key, salt} = account.Hash.dataValues;
         const {role_id} = account.dataValues;
 

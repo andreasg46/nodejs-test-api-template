@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../configs/db_config');
+const {bad, checkJWT} = require('../helpers');
 
 const User = require('../models/user');
 
@@ -18,8 +19,13 @@ router.get('/users', (req, res) => {
         });
 });
 
-router.post('/user/create', async (req, res) => {
-    const posted_user = req.body; // submitted teleport
+router.post('/user/create', checkJWT, async (req, res) => {
+    const posted_user = req.body;
+
+    let jwt = req.jwt.data || {}
+    if (jwt.role_id !== 2 || !jwt.uid) {
+        return bad(res, 401, "Unauthorized");
+    }
 
     User.create({
         id: posted_user.id,
@@ -41,9 +47,14 @@ router.post('/user/create', async (req, res) => {
         });
 });
 
-router.put('/user/update/:id', (req, res) => {
+router.put('/user/update/:id', checkJWT, (req, res) => {
     const {id} = req.params;
     const posted_user = req.body;
+
+    let jwt = req.jwt.data || {}
+    if (jwt.role_id !== 2 || !jwt.uid) {
+        return bad(res, 401, "Unauthorized");
+    }
 
     return db.transaction(async (t) => {
         if (isNaN(id)) {
@@ -96,7 +107,12 @@ router.put('/user/update/:id', (req, res) => {
         });
 });
 
-router.delete('/users/delete-all', (req, res) => {
+router.delete('/users/delete-all', checkJWT, (req, res) => {
+    let jwt = req.jwt.data || {}
+    if (jwt.role_id !== 2 || !jwt.uid) {
+        return bad(res, 401, "Unauthorized");
+    }
+
     return User.destroy({
         where: {},
         truncate: true

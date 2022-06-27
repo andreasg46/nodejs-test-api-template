@@ -1,9 +1,9 @@
 ﻿const debug = process.env.DEBUGLOGS || false;
 
-module.exports.jwt = require('./jwt.js');
-module.exports.cr = require('./crypto.js');
+const jwt = require('./jwt.js');
+const cr = require('./crypto.js');
 
-module.exports.timeLog = (message, type) => {
+const timeLog = (message, type) => {
     if (type == null) {
         type = 'INFO';
     }
@@ -25,14 +25,16 @@ module.exports.timeLog = (message, type) => {
     seconds = seconds.substring(seconds.length - 2);
     return console.log(`#############:  ${day}/${month}/${year} - ${hours}:${minutes}:${seconds} : ${type} : ${message}`);
 };
-module.exports.bad = (res, status, msg = 'ERROR') => {
+
+const bad = (res, status, msg = 'ERROR') => {
     const response = {
         message: msg
     };
     res.setHeader('Content-Type', 'application/json');
     return res.status(status).end(JSON.stringify(response));
 };
-module.exports.ok = (res, data, msg = 'Success') => {
+
+const ok = (res, data, msg = 'Success') => {
     const response = {
         ...data,
         message: msg
@@ -40,14 +42,14 @@ module.exports.ok = (res, data, msg = 'Success') => {
     res.setHeader('Content-Type', 'application/json');
     return res.status(200).end(JSON.stringify(response));
 };
-module.exports.checkJWT = (req, res, next) => {
-    const path = req.path.split('/')[1];
 
+const checkJWT = (req, res, next) => {
+    const path = req.path.split('/')[1];
     const fullToken = req.header('Authorization') ? req.header('Authorization').split(' ') : null;
     const tokenType = fullToken ? fullToken[0] : null;
     const token = fullToken ? fullToken[1] : null;
     if (tokenType !== 'Bearer') {
-        timeLog(`ERROR : Incorrect token type : ${tokenType}.`);
+        // timeLog(`ERROR : Incorrect token type : ${tokenType}.`);
         return res.status(401).end('Unauthorized\n');
     }
     jwt.renew(token, (err, data) => {
@@ -59,7 +61,8 @@ module.exports.checkJWT = (req, res, next) => {
         return next();
     });
 };
-module.exports.checkEmail = (email, fn) => {
+
+const checkEmail = (email, fn) => {
     Account.findOne({where: {email: email}}).then((result, err) => {
         if (err) {
             timeLog(err);
@@ -74,6 +77,7 @@ module.exports.checkEmail = (email, fn) => {
 };
 
 
+module.exports = {jwt, cr, timeLog, bad, ok, checkJWT, checkEmail}
 
 
 
