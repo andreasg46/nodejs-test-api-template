@@ -19,7 +19,7 @@ const Account = db.define('Account', {
     },
 }, {
     tableName: 'account',
-    timestamps: true
+    timestamps: false
 });
 
 Account.hasOne(Hash);

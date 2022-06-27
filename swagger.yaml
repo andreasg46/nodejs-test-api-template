@@ -1,103 +1,164 @@
 ---
 openapi: 3.0.0
 info:
- title: NodeJS REST API basic template
- version: 1.0.0
- description: REST APIs Library and Documentation. This program uses 
+  title: NodeJS REST API basic template
+  version: 1.0.0
+  description: REST APIs Library and Documentation. This program uses
 servers:
- - url: "http://localhost:7000/"
-   description: Development Server
+  - url: "http://localhost:7000/"
+    description: Development Server
 tags:
- - name: Users
-   description: Everything about users
+  - name: Accounts
+    description: Everything about accounts
+  - name: Users
+    description: Everything about users
 paths:
- /users:
-  get:
-   summary: Returns the list of all users
-   tags: [ Users ]
-   responses:
-    200:
-     description: The list of users
-     content:
-      application/json:
-       schema:
-        type: array
-        items:
-         $ref: '#/components/schemas/User'
- /user/create:
-  post:
-      summary: Creates a new user
-      tags: [Users]
+  /account/create:
+    post:
+      summary: Creates a new account
+      tags: [ Accounts ]
       requestBody:
-          required: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        200:
+          description: The account was successfully created
           content:
-           application/json:
+            application/json:
               schema:
-                  $ref: '#/components/schemas/User'
-      responses:
-          200:
-              description: The user was successfully created
-              content:
-                  application/json:
-                      schema:
-                          $ref: '#components/schemas/User'
-          500:
-              description: Server error
+                $ref: '#components/schemas/Account'
+        500:
+          description: Server error
       security:
-         - bearerAuth: [ ]
- /user/update/{id}:
-  put:
+        - bearerAuth: [ ]
+  /login:
+    post:
+      summary: Logs into the System
+      tags: [ Accounts ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        200:
+          description: The account was successfully logged id
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Account'
+        500:
+          description: Server error
+      security:
+        - bearerAuth: [ ]
+  /users:
+    get:
+      summary: Returns the list of all users
+      tags: [ Users ]
+      responses:
+        200:
+          description: The list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /user/create:
+    post:
+      summary: Creates a new user
+      tags: [ Users ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: The user was successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        500:
+          description: Server error
+      security:
+        - bearerAuth: [ ]
+  /user/update/{id}:
+    put:
       summary: Updates a user by id
-      tags: [Users]
+      tags: [ Users ]
       parameters:
         - in: path
           name: id
           schema:
-              type: string
+            type: string
           required: true
           description: The user id
       requestBody:
-          required: true
-          content:
-              application/json:
-                  schema:
-                      $ref: '#components/schemas/User'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/User'
       responses:
-          200:
-              description: The user was updated
-              content:
-                  application/json:
-                      schema:
-                          $ref: '#/components/schemas/User'
-          404:
-              description: The user was not found
- /user/delete/{id}:
-  delete:
+        200:
+          description: The user was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: The user was not found
+  /user/delete/{id}:
+    delete:
       summary: Deletes a user by id
-      tags: [Users]
+      tags: [ Users ]
       parameters:
         - in: path
           name: id
           schema:
-              type: string
+            type: string
           required: true
           description: The user id
       responses:
-          200:
-              description: The user was deleted
-              content:
-                  application/json:
-                      schema:
-                          $ref: '#/components/schemas/User'
-          404:
-              description: The user was not found       
-
+        200:
+          description: The user was deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: The user was not found
 components:
   schemas:
+    Account:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        id:
+          type: integer
+          description: The auto-generated id of the account
+        email:
+          type: string
+          description: The account email
+        password:
+          type: string
+          description: The account password
+      example:
+        email: test@domain.com
+        password: password
     User:
       type: object
       required:
-      - id
+        - id
       properties:
         id:
           type: integer

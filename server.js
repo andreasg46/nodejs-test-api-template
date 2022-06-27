@@ -6,7 +6,7 @@ const PORT = process.env.PORT;
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const timeLog = require('./timelog')
+const {timeLog} = require('./helpers');
 
 // Swagger UI
 const swaggerUi = require('swagger-ui-express');

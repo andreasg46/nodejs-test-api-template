@@ -1,6 +1,5 @@
 ﻿const {DataTypes} = require('sequelize')
 const db = require('../configs/db_config')
-const User = require('./user')
 
 const Hash = db.define('Hash', {
     id: {
@@ -15,15 +14,9 @@ const Hash = db.define('Hash', {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    account_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-    },
 }, {
     tableName: 'hash',
     timestamps: false
 });
-
-Hash.belongsTo(User);
 
 module.exports = Hash;
